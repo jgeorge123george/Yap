@@ -1,6 +1,6 @@
 import {useState} from 'react';
 import {useNavigate} from 'react-router-dom';
-import { sendCreateAccountRequest } from '../user/userApi.tsx';
+import { sendCreateAccountRequest } from '../apiRequests/user/userApi.tsx';
 
 export function useAccountForm() {
     const [email, setEmail] = useState('');

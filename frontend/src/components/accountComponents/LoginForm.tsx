@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { sendLoginRequest } from '../../user/userLogin.tsx';
+import { sendLoginRequest } from '../../apiRequests/user/userLogin.tsx';
 
 
 export default function LoginForm() {
