@@ -1,19 +1,14 @@
-import { useState } from 'react';
-
-
-// src/components/postComponents/PostButton.tsx
-interface PostButtonProps {
+import React from 'react'
+type Props = {
   onClick: () => void;
-  className?: string;
 }
 
-export default function PostButton({ onClick, className = '' }: PostButtonProps) {
-  return (
-    <button
-      onClick={onClick}
-      className={`bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-full shadow-lg ${className}`}
-    >
+class PostButton extends React.Component<Props> {
+  render() {
+    return <button onClick={this.props.onClick}>
       +
     </button>
-  );
+  }
 }
+
+export default PostButton;

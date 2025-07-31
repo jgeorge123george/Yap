@@ -1,21 +1,18 @@
-// src/pages/Profile/components/ProfileNav.tsx
 import React from 'react';
+import { NavLink } from 'react-router-dom';
 
-export default function ProfileNav() {
+const ProfileNav = () => {
   return (
-    <div className="w-full border-b border-gray-300 flex justify-around">
-      <button className="py-3 px-4 border-b-2 border-white text-white font-medium">
-        Posts
-      </button>
-      <button className="py-3 px-4 text-gray-400 hover:text-white">
-        Replies
-      </button>
-      <button className="py-3 px-4 text-gray-400 hover:text-white">
-        Likes
-      </button>
-      <button className="py-3 px-4 text-gray-400 hover:text-white">
-        Tagged
-      </button>
+    <div className="relative h-[48px] border-b-2 border-gray-600">
+      
+
+      <nav className="grid grid-cols-3 text-center h-full">
+        <NavLink to="posts" className="px-4 py-2">Posts</NavLink>
+        <NavLink to="replies" className="px-4 py-2">Replies</NavLink>
+        <NavLink to="likes" className="px-4 py-2">Likes</NavLink>
+      </nav>
     </div>
   );
-}
+};
+
+export default ProfileNav;
