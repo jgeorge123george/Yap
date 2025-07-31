@@ -14,7 +14,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.model.UserModel;
 import com.example.demo.service.UserService;
+import com.example.demo.util.JwtUtil;
 import com.example.demo.viewmodel.UserAccountRequest;
+
+
+
 
 @RestController
 @RequestMapping("/api/users")
@@ -46,37 +50,43 @@ public class UserAccountController {
                 "message", e.getMessage()
             ));
         } catch (Exception e) {
-            // Return generic error in JSON
+            e.printStackTrace(); // ADD THIS
             return ResponseEntity.internalServerError().body(Map.of(
-                "message", "Something went wrong"
+                "message", "Something went wrong",
+                "error", e.getMessage()  // ADD THIS for more info
             ));
         }
     }
 
-    @CrossOrigin(origins = "http://localhost:3000")
-    @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody UserAccountRequest userRequest) {
-        try {
-            UserModel userModel = new UserModel();
-            userModel.setEmail(userRequest.getEmail());
-            userModel.setPassword(userRequest.getPassword());
+    @Autowired
+private JwtUtil jwtUtil;
 
-            if (userService.login(userModel)) {
-                return ResponseEntity.ok(Map.of(
-                    "message", "Login successful for: " + userModel.getEmail()
-                ));
-            }
-            else {
-                return ResponseEntity.ok(Map.of(
-                    "error", "Invalid email or password"
-                ));
-            }
-        }
-        catch(Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of(
-                "error", "An error occurred: " + e.getMessage()
+@CrossOrigin(origins = "http://localhost:3000")
+@PostMapping("/login")
+public ResponseEntity<?> login(@RequestBody UserAccountRequest userRequest) {
+    try {
+        UserModel userModel = new UserModel();
+        userModel.setEmail(userRequest.getEmail());
+        userModel.setPassword(userRequest.getPassword());
+
+        if (userService.login(userModel)) {
+            String token = jwtUtil.generateToken(userModel.getEmail());
+
+            return ResponseEntity.ok(Map.of(
+                "message", "Login successful for: " + userModel.getEmail(),
+                "token", token
+            ));
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of(
+                "error", "Invalid email or password"
             ));
         }
+    } catch (Exception e) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of(
+            "error", "An error occurred: " + e.getMessage()
+        ));
     }
+}
+
 
 }
